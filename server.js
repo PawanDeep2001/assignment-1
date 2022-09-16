@@ -43,25 +43,25 @@ app.get('/api/movies', function(req,res){
 
 app.get('/api/movies/:_id', function(req,res){
     db.getMovieById(req.params._id).then((data)=>{
-        res.status(500).json(data);
+        res.json(data);
     }).catch((err)=>{
-        res.status(404).json("id doesn't exist");
+        res.status(204).json("id doesn't exist");
     });
 });
 
 app.put('/api/movie/:_id', function (req, res) {
     db.updateMovieById(req.params._id).then(()=>{
-        res.status(201).json("movie updated");
+        res.json("movie updated");
     }).catch((err)=>{
-        res.status(404).json(err.message);
+        res.status(500).json(err.message);
     });
 });
 
 app.delete('/api/movies/:_id', function (req, res) {
     db.deleteMovieById(req.params._id).then(()=>{
-        res.status(204).json("movie deleted");
+        res.json("movie deleted");
     }).catch((err)=>{
-        res.status(404).json(err.message);
+        res.status(500).json(err.message);
     });
 });
 

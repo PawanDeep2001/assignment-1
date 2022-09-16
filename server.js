@@ -1,3 +1,14 @@
+/********************************************************************************* 
+ * WEB422 – Assignment 1 
+ * I declare that this assignment is my own work in accordance with Seneca Academic Policy. 
+ * No part of this assignment has been copied manually or electronically from any other source 
+ * (including web sites) or distributed to other students.
+ * 
+ * Name: Pawan Deep Student ID: 111144218 Date: 16/09/2022 
+ * Cyclic Link: https://agreeable-red-clam.cyclic.app/ 
+ * 
+ ********************************************************************************/
+
 var express = require('express');
 var app = express();
 var cors = require('cors');
@@ -13,9 +24,11 @@ app.get('/', (req,res)=>{
     res.json({message: "API Listening"});
 });
 
-app.post("/api/names", (req,res)=>{
-    db.addNewMovie(req.body).then(()=>{
-        res.status(201).json({message: "created"});
+app.post("/api/movies", (req,res)=>{
+    db.addNewMovie(req.body).then((data)=>{
+        res.status(201).json(data);
+    }).catch((err)=>{
+        res.json(err.message);
     });
     
 });
@@ -24,13 +37,13 @@ app.get('/api/movies', function(req,res){
     db.getAllMovies(req.query.page,req.query.perPage,req.query.title).then((data)=>{
         res.json(data);
     }).catch((err)=>{
-        res.json(err);
+        res.json(err.message);
     });
 });
 
 app.get('/api/movies/:_id', function(req,res){
     db.getMovieById(req.params._id).then((data)=>{
-        res.json(data);
+        res.status(500).json(data);
     }).catch((err)=>{
         res.status(404).json("id doesn't exist");
     });
@@ -40,15 +53,15 @@ app.put('/api/movie/:_id', function (req, res) {
     db.updateMovieById(req.params._id).then(()=>{
         res.status(201).json("movie updated");
     }).catch((err)=>{
-        res.status(404).json(err);
+        res.status(404).json(err.message);
     });
 });
 
 app.delete('/api/movies/:_id', function (req, res) {
     db.deleteMovieById(req.params._id).then(()=>{
-        res.status(201).json("movie deleted");
+        res.status(204).json("movie deleted");
     }).catch((err)=>{
-        res.status(404).json(err);
+        res.status(404).json(err.message);
     });
 });
 
